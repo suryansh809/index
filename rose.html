@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Anuska Baby ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Great+Vibes&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #ffb3c1;
+            --paper-color: #fff9ec;
+            --env-width: 320px;
+            --env-height: 220px;
+            --petal-color: #ff4d6d;
+        }
+
+        @media (min-width: 640px) {
+            :root {
+                --env-width: 400px;
+                --env-height: 280px;
+            }
+        }
+
+        body {
+            background-color: #ffe5ec;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: var(--primary-pink);
+            opacity: 0.6;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .envelope-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: var(--env-width);
+            height: var(--env-height);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper.open {
+            transform: translateY(50px);
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-pink);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 4;
+            border-top: calc(var(--env-height) / 2 + 10px) solid var(--primary-pink);
+            border-left: calc(var(--env-width) / 2) solid transparent;
+            border-right: calc(var(--env-width) / 2) solid transparent;
+            transform-origin: top;
+            transition: transform 0.5s 0.3s;
+        }
+
+        .envelope::after {
+            content: "";
+            position: absolute;
+            z-index: 3;
+            width: 0;
+            height: 0;
+            border-top: calc(var(--env-height) / 2 + 10px) solid transparent;
+            border-left: calc(var(--env-width) / 2) solid var(--soft-pink);
+            border-right: calc(var(--env-width) / 2) solid var(--soft-pink);
+            border-bottom: calc(var(--env-height) / 2) solid var(--soft-pink);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .envelope-wrapper.open .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 80%;
+            background: var(--paper-color);
+            padding: 25px 20px;
+            border-radius: 5px;
+            transition: all 0.8s 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-family: 'Dancing Script', cursive;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--soft-pink) transparent;
+        }
+
+        .envelope-wrapper.open .letter {
+            height: 420px;
+            max-height: 70vh;
+            bottom: 80px;
+            transform: translateX(-50%) translateY(-100px);
+            z-index: 5;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .letter-content {
+            font-size: 1.35rem;
+            color: #444;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            min-height: 100px;
+            position: relative;
+        }
+
+        .important-text {
+            color: var(--primary-pink);
+            font-weight: bold;
+        }
+
+        #pen {
+            position: absolute;
+            width: 60px; /* Bigger for ink pen detail */
+            height: 60px;
+            z-index: 100;
+            display: none;
+            pointer-events: none;
+            filter: drop-shadow(3px 3px 4px rgba(0,0,0,0.3));
+            transition: all 0.05s linear;
+            transform: translate(5px, -55px) rotate(-15deg);
+        }
+
+        #cursor-tracker {
+            display: inline-block;
+            width: 1px;
+            height: 1.2em;
+            visibility: hidden;
+        }
+
+        .btn-open {
+            background: white;
+            color: var(--primary-pink);
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3);
+            margin-top: 40px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1.1rem;
+        }
+
+        .proposal-final {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart-seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            color: white;
+            font-size: 2.2rem;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        /* Celebration Styles */
+        .celebration-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000; /* Highest z-index to be on top of everything */
+        }
+
+        .petal {
+            width: 15px;
+            height: 20px;
+            background-color: var(--petal-color);
+            border-radius: 15px 2px 15px 2px;
+            opacity: 0.8;
+        }
+
+        .falling-text {
+            font-family: 'Great Vibes', cursive;
+            color: var(--primary-pink);
+            font-size: 3rem; /* Even bigger */
+            font-weight: bold;
+            white-space: nowrap;
+            text-shadow: 2px 2px 15px white;
+            opacity: 1;
+        }
+
+        .cute-text {
+            font-family: 'Dancing Script', cursive;
+            color: #ff0054;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px white, 0 0 20px rgba(255, 0, 84, 0.2);
+            text-align: center;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(2px);
+        }
+
+        @keyframes falling-sway {
+            0% { transform: translateY(-15vh) translateX(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes falling-straight {
+            0% { transform: translateY(-20vh); opacity: 1; }
+            100% { transform: translateY(110vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-bg" id="heartContainer"></div>
+
+    <div class="envelope-container">
+        <h1 id="mainTitle" class="text-3xl md:text-5xl text-pink-600 font-bold mb-10 text-center px-4" style="font-family: 'Great Vibes', cursive;">To My Dearest Anuska Baby...</h1>
+
+        <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+            <div class="heart-seal">❤️</div>
+            <div class="envelope"></div>
+            <div class="letter" id="letter">
+                <div class="letter-content">
+                    <span id="typewriterText"></span><span id="cursor-tracker"></span>
+                    <div id="pen">
+                        <!-- Ink Fountain Pen SVG -->
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Pen Nib -->
+                            <path d="M50 95 L35 70 C30 60 30 50 35 40 L45 10 L55 10 L65 40 C70 50 70 60 65 70 L50 95 Z" fill="#2d3436" stroke="#000" stroke-width="1"/>
+                            <!-- Silver Part -->
+                            <path d="M40 75 L50 95 L60 75" fill="#dfe6e9" stroke="#b2bec3" stroke-width="1"/>
+                            <!-- Ink Slit -->
+                            <path d="M50 95 L50 65" stroke="#000" stroke-width="1.5"/>
+                            <!-- Gold Band -->
+                            <rect x="42" y="35" width="16" height="5" fill="#fab1a0" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <div id="finalProposal" class="proposal-final">
+                    <p class="text-3xl text-pink-600 font-bold mb-6">Will you be mine forever?</p>
+                    <button id="yesBtn" class="bg-pink-500 text-white px-10 py-3 rounded-full shadow-xl hover:bg-pink-600 transform hover:scale-110 transition active:scale-95 font-bold text-lg" onclick="celebrate(event)">YES! ❤️</button>
+                </div>
+            </div>
+        </div>
+
+        <button id="openBtn" class="btn-open" onclick="openEnvelope()">Tap to Open the Letter</button>
+    </div>
+
+    <script>
+        const rawText = `My Dearest [[Anuska Baby]],
+
+From the moment you entered my life, everything changed. Your smile lights up my darkest days, and your love gives me a reason to be a better man.
+
+Today, on [[Proposal Day]], I want to tell you how much you mean to me. Every second spent with you is a treasure I want to keep forever.
+
+I don't just want a "now" with you, I want an [[always]]. I want to grow old with you, laugh with you, and support you through every storm.
+
+You are my heart, my soul, and my everything. I promise to cherish you, love you, and stand by you for the rest of my life.
+
+Thinking of a future with you makes me the happiest person alive...`;
+
+        function createHearts() {
+            const container = document.getElementById('heartContainer');
+            const heartIcons = ['❤️', '💖', '💗', '💕'];
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 6000);
+            }, 500);
+        }
+
+        let isOpened = false;
+        function openEnvelope() {
+            if (isOpened) return;
+            isOpened = true;
+            document.getElementById('envelopeWrapper').classList.add('open');
+            document.getElementById('openBtn').style.opacity = '0';
+            setTimeout(() => document.getElementById('openBtn').style.display = 'none', 300);
+            document.getElementById('mainTitle').innerText = "For You, Anuska ❤️";
+            setTimeout(startWriting, 1800);
+        }
+
+        function startWriting() {
+            const textContainer = document.getElementById('typewriterText');
+            const cursor = document.getElementById('cursor-tracker');
+            const pen = document.getElementById('pen');
+            const letter = document.getElementById('letter');
+            pen.style.display = 'block';
+            
+            let i = 0;
+            let currentContent = "";
+
+            function type() {
+                if (i < rawText.length) {
+                    let char = rawText.charAt(i);
+                    if (char === '[' && rawText.charAt(i+1) === '[') {
+                        i += 2;
+                        currentContent += '<span class="important-text">';
+                        type();
+                        return;
+                    } else if (char === ']' && rawText.charAt(i+1) === ']') {
+                        i += 2;
+                        currentContent += '</span>';
+                        type();
+                        return;
+                    }
+                    currentContent += char;
+                    textContainer.innerHTML = currentContent;
+                    
+                    // Natural pen movement
+                    const wobble = Math.sin(i * 0.7) * 3;
+                    pen.style.left = (cursor.offsetLeft + wobble) + 'px';
+                    pen.style.top = (cursor.offsetTop + Math.cos(i * 0.7) * 2) + 'px';
+                    
+                    i++;
+                    letter.scrollTop = letter.scrollHeight;
+                    let delay = char === '.' || char === '?' || char === '!' ? 400 : 55;
+                    if (char === '\n') delay = 600;
+                    setTimeout(type, delay);
+                } else {
+                    pen.style.display = 'none';
+                    document.getElementById('finalProposal').style.display = 'block';
+                    setTimeout(() => letter.scrollTo({ top: letter.scrollHeight, behavior: 'smooth' }), 100);
+                }
+            }
+            type();
+        }
+
+        function celebrate(e) {
+            e.stopPropagation();
+            const mainTitle = document.getElementById('mainTitle');
+            mainTitle.innerText = "She Said Yes! I Love You Anuska! ❤️";
+            mainTitle.classList.add('animate-bounce');
+            document.getElementById('yesBtn').style.display = 'none';
+
+            // 1. Massive Initial Burst
+            for(let i=0; i<150; i++) {
+                createParticle(true);
+            }
+
+            // 2. Continuous Rainfall
+            let celebrationInterval = setInterval(() => {
+                createParticle(false);
+            }, 80);
+
+            // 3. Second Massive Burst with "you are so cute" on TOP
+            setTimeout(() => {
+                for(let i=0; i<60; i++) {
+                   createCuteBurst();
+                }
+            }, 2500);
+
+            setTimeout(() => clearInterval(celebrationInterval), 15000);
+        }
+
+        function createParticle(isBurst) {
+            const particle = document.createElement('div');
+            const rand = Math.random();
+            
+            particle.className = 'celebration-particle';
+            
+            let isText = false;
+            if (rand < 0.3) {
+                particle.innerHTML = ['❤️', '💖', '💗', '💕'][Math.floor(Math.random() * 4)];
+                particle.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            } else if (rand < 0.55) {
+                particle.className += ' petal';
+                const colors = ['#ff4d6d', '#ff758f', '#ff8fa3', '#c9184a'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.width = (Math.random() * 12 + 10) + 'px';
+                particle.style.height = (Math.random() * 12 + 15) + 'px';
+            } else {
+                particle.className += ' falling-text';
+                particle.innerHTML = "I Love You";
+                isText = true;
+            }
+
+            if (isBurst) {
+                particle.style.left = '50vw';
+                particle.style.top = '50vh';
+                particle.style.transition = 'all 3s cubic-bezier(0.1, 0.8, 0.3, 1)';
+                document.body.appendChild(particle);
+
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 1100 + 500;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+
+                setTimeout(() => {
+                    particle.style.transform = `translate(${tx}px, ${ty}px) rotate(${isText ? 0 : Math.random() * 720}deg)`;
+                    particle.style.opacity = '0';
+                }, 50);
+            } else {
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = '-20vh';
+                particle.style.animation = isText 
+                    ? `falling-straight ${Math.random() * 5 + 4}s linear forwards`
+                    : `falling-sway ${Math.random() * 5 + 4}s linear forwards`;
+                document.body.appendChild(particle);
+            }
+
+            setTimeout(() => particle.remove(), 8000);
+        }
+
+        function createCuteBurst() {
+            const particle = document.createElement('div');
+            particle.className = 'celebration-particle cute-text';
+            particle.innerHTML = "you are so cuute annu bbby";
+            particle.style.left = '50vw';
+            particle.style.top = '50vh';
+            particle.style.transition = 'all 4s cubic-bezier(0.1, 0.8, 0.3, 1)';
+            document.body.appendChild(particle);
+
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 1400 + 600;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+
+            setTimeout(() => {
+                particle.style.transform = `translate(${tx}px, ${ty}px) scale(${Math.random() * 0.4 + 0.9}) rotate(${Math.random() * 20 - 10}deg)`;
+                particle.style.opacity = '0';
+            }, 50);
+            setTimeout(() => particle.remove(), 4500);
+        }
+
+        window.onload = createHearts;
+    </script>
+</body>
+</html>
